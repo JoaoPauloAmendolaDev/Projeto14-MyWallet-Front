@@ -1,10 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import Button from "../assets/constants/Button";
 import Body from "../assets/constants/Body";
-import { CenterContent, Logo, FormConteiner, Form, SignUp } from "./LoginStyle";
+import SignUp from "./LoginStyle";
+import Logo from "../assets/constants/Logo";
+import Form from "../assets/constants/Form";
+import FormConteiner from "../assets/constants/FormConteiner";
+import CenterContent from "../assets/constants/CenterContent";
 
 export default function Login() {
   const [email, setEmail] = useState("");
