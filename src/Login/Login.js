@@ -8,6 +8,7 @@ import Logo from "../assets/constants/Logo";
 import Form from "../assets/constants/Form";
 import FormConteiner from "../assets/constants/FormConteiner";
 import CenterContent from "../assets/constants/CenterContent";
+import Content from "../assets/constants/Content";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,6 +16,22 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   let navigate = useNavigate();
+
+  function handleLogin() {
+    if (!email || !password) {
+      return alert("Preencha os campos solicitados");
+    }
+
+    axios
+      .post("http://localhost:3333/sign-in", { email, password })
+      .then((obj) => {
+        sessionStorage.setItem("token", obj.data.token);
+        sessionStorage.setItem("name", obj.data.name);
+        sessionStorage.setItem("email", email);
+        navigate("/extract");
+      })
+      .catch((err) => console.log(err));
+  }
 
   function goTo(Where) {
     switch (Where) {
@@ -31,27 +48,29 @@ export default function Login() {
           <p>MyWallet</p>
         </Logo>
         <FormConteiner>
-          <Form>
+          <Content>
             <input
               type={"email"}
-              placeholder="E-mail"
               onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
+              required="required"
               avaible={loading ? "#F2F2F2" : "#fff"}
             ></input>
-          </Form>
-          <Form>
+            <span>E-mail</span>
+          </Content>
+          <Content>
             <input
               type={"password"}
-              placeholder="Senha"
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
+              required="required"
               avaible={loading ? "#F2F2F2" : "#fff"}
             ></input>
-          </Form>
+            <span>Senha</span>
+          </Content>
         </FormConteiner>
         <Button>
-          <p>Entrar</p>
+          <p onClick={() => handleLogin()}>Entrar</p>
         </Button>
         <SignUp onClick={() => goTo("SignUp")}>
           Primeira vez? Cadastre-se!

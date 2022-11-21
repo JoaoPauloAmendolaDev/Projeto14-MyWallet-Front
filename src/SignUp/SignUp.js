@@ -1,10 +1,11 @@
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Body from "../assets/constants/Body";
 import Button from "../assets/constants/Button";
 import CenterContent from "../assets/constants/CenterContent";
-import Form from "../assets/constants/Form";
+import Content from "../assets/constants/Content";
 import FormConteiner from "../assets/constants/FormConteiner";
 import Logo from "../assets/constants/Logo";
 
@@ -25,13 +26,23 @@ export default function SignUp() {
 
   function test() {
     setLoading(true);
+
+    if (password !== passwordConfirm) {
+      return alert("As senhas devem coincidir");
+    }
+
     if (email && name && password && passwordConfirm) {
-      let object = {
-        email: email,
-        name: name,
-        password: password,
-        passwordConfirm: passwordConfirm,
-      };
+      axios
+        .post("http://localhost:3333/sign-up", { email, password, name })
+        .then((obj) => {
+          sessionStorage.setItem("name", name);
+          sessionStorage.setItem("token", obj.data.token);
+          sessionStorage.setItem("email", email);
+          navigate("/extract");
+        })
+        .catch((err) => console.log(err));
+    } else {
+      return alert("preencha corretamente os campos");
     }
   }
 
@@ -40,41 +51,45 @@ export default function SignUp() {
       <CenterContent>
         <Logo>MyWallet</Logo>
         <FormConteiner>
-          <Form>
+          <Content>
             <input
-              placeholder="Nome"
               onChange={(e) => setName(e.target.value)}
               disabled={loading}
+              required="required"
               avaible={loading ? "#f2f2f2" : "#fff"}
             ></input>
-          </Form>
-          <Form>
+            <span>Nome</span>
+          </Content>
+          <Content>
             <input
               type={"email"}
-              placeholder="E-mail"
               onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
+              required="required"
               avaible={loading ? "#f2f2f2" : "#fff"}
             ></input>
-          </Form>
-          <Form>
+            <span>E-mail</span>
+          </Content>
+          <Content>
             <input
               type={"password"}
-              placeholder="Senha"
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
+              required="required"
               avaible={loading ? "#f2f2f2" : "#fff"}
             ></input>
-          </Form>
-          <Form>
+            <span>Senha</span>
+          </Content>
+          <Content>
             <input
               type={"password"}
-              placeholder="Confirme a senha"
               onChange={(e) => setPasswordConfirm(e.target.value)}
               disabled={loading}
+              required="required"
               avaible={loading ? "#f2f2f2" : "#fff"}
             ></input>
-          </Form>
+            <span>Confirme a senha</span>
+          </Content>
         </FormConteiner>
         <Button>
           <p onClick={() => test()}>Cadastrar</p>

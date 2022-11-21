@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-
-
 const CenterContent = styled.div`
   width: 100%;
   height: 100%;
@@ -11,4 +9,4 @@ const CenterContent = styled.div`
   align-items: center;
 `;
 
-export default CenterContent
+export default CenterContent;
